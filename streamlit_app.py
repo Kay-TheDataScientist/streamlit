@@ -42,8 +42,14 @@ subcategories = df1['Sub_Category'].unique()
 selected_subcategories = st.multiselect("Select Subcategories", subcategories)
 
 st.write("### (3) Show a line chart of sales for the selected items in (2)")
-sales_by_month1 = df2.groupby(pd.Grouper(freq='M'))['Sales'].sum()
-st.line_chart(sales_by_month1)
+
+if selected_subcategories:
+    df2 = df1[df1['Sub_Category'].isin(selected_subcategories)]
+    sales_by_month1 = df2.groupby(pd.Grouper(freq='M'))['Sales'].sum()
+    st.line_chart(sales_by_month1)
+else:
+    st.warning("Please select at least one Sub-Category to display the sales line chart.")
+
 
 
 st.write("### (4) Show three metrics for the selected items in (2): total sales, total profit, and overall profit margin (%)")
